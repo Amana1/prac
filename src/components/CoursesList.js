@@ -19,7 +19,7 @@ function CoursesList(props) {
               <td>
                 <Link to={`/course/${courses.slug}`}>{courses.title}</Link>
               </td>
-              <td>{courses.authorId}</td>
+              <td>{(courses.authorId)}</td>
               <td>{courses.category}</td>
             </tr>
           );
