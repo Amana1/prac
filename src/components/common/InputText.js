@@ -6,7 +6,6 @@ function InputText(props) {
   if (props.error.length > 0) {
     wrapperClass += " has-error";
   }
-  debugger;
   return (
     <div className={wrapperClass}>
       <label htmlFor={props.id}>{props.label}</label>

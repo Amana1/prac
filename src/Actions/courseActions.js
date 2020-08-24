@@ -23,3 +23,13 @@ export function loadCourse() {
     });
   });
 }
+
+export function deleteCourse(id) {
+  return courseApi.deleteCourse(id).then(() => {
+    // Hey Dispatcher, go tell all the stores that a course was just created.
+    dispatcher.dispatch({
+      actionType: actionTypes.DELETE_COURSE,
+      id,
+    });
+  });
+}

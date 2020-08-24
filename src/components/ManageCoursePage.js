@@ -3,9 +3,12 @@ import CourseForm from "./CourseForm";
 import courseStore from "../stores/courseStore";
 import * as courseActions from "../Actions/courseActions";
 import { toast } from "react-toastify";
+//import PageNotFound from "./pageNotFound";
 
 const ManageCoursePage = (props) => {
+  //const [slugValid, setSlugValid] = useState({ valid: false });
   const [errors, setErrors] = useState({});
+  const [courses, setCourses] = useState(courseStore.getCourses());
   const [course, setCourse] = useState({
     id: null,
     title: "",
@@ -15,12 +18,29 @@ const ManageCoursePage = (props) => {
   });
 
   useEffect(() => {
+    courseStore.addChangeListener(onChange);
+    let slug = props.match.params.slug;
+    if (courses.length === 0) {
+      courseActions.loadCourse();
+    } else if (slug) {
+      setCourse(courseStore.getCourseBySlug(slug));
+    }
+  }, [courses.length, props.match.params.slug]);
+
+  /*useEffect(() => {
     let slug = props.match.params.slug;
     if (slug) {
-      setCourse(courseStore.getCourses(slug));
+      debugger;
+      for (let i = 0; i < courses.length; i++) {
+        if (courses[i].slug === slug || slug === "")
+          setSlugValid({ valid: true });
+      }
     }
-  }, [props.match.params.slug]);
+  }, [props.match.params.slug]);*/
 
+  function onChange() {
+    setCourses(courseStore.getCourses());
+  }
   function handleChange({ target }) {
     setCourse({
       ...course,
@@ -37,18 +57,15 @@ const ManageCoursePage = (props) => {
   }
   function formIsValid() {
     const _errors = {};
-
     if (!course.title) _errors.title = "Title is Required";
     if (!course.authorId) _errors.authorId = "Author ID is Required";
     if (!course.category) _errors.category = "Category is Required";
-
     setErrors(_errors);
     return Object.keys(_errors).length === 0;
   }
   return (
     <>
       <h2>Manage Course</h2>
-      {props.match.params.slug}
       <CourseForm
         errors={errors}
         course={course}

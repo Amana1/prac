@@ -10,6 +10,7 @@ function CoursesList(props) {
           <th>Title</th>
           <th>Author ID</th>
           <th>Category</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -19,8 +20,21 @@ function CoursesList(props) {
               <td>
                 <Link to={`/course/${courses.slug}`}>{courses.title}</Link>
               </td>
-              <td>{(courses.authorId)}</td>
+              <td>
+                {props.authors.length === 0
+                  ? courses.authorId
+                  : props.authors[courses.authorId - 1].name}
+              </td>
               <td>{courses.category}</td>
+              <td>
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={() => props.onDel(courses.id)}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           );
         })}
@@ -30,6 +44,7 @@ function CoursesList(props) {
 }
 
 CoursesList.propTypes = {
+  onDel: PropTypes.func.isRequired,
   courses: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,

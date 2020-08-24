@@ -2,7 +2,6 @@ import React from "react";
 import InputText from "./common/InputText";
 
 function CourseForm(props) {
-  debugger;
   return (
     <form onSubmit={props.onSubmit}>
       <InputText
